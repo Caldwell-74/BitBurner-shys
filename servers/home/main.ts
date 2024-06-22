@@ -1,4 +1,4 @@
-import MyrianHandler from "./myrian";
+import MyrianHandler from "../../myridian/myrian";
 /** @param {NS} ns */
 export async function main(ns: NS) {
 	ns.disableLog("ALL");
@@ -20,6 +20,6 @@ export async function main(ns: NS) {
 	ns.myrian.uninstallDevice;
 	*/
 	const myr = new MyrianHandler(ns);
-	ns.printRaw(myr.getUI());
+	ns.printRaw(myr.UI);
 	return new Promise(() => {});
 }

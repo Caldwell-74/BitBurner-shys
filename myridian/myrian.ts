@@ -1,16 +1,20 @@
+import React from "react";
 import { Root } from "./components/root";
+import { ReactNode } from "NetscriptDefinitions";
 
 class MyrianHandler {
 	myrian: Myrian;
 	constructor(ns: NS) {
 		Object.assign(this, ns);
 	}
-	getUI() {
-		return Root({
-			getDevices: this.devices(),
+
+	get UI(): ReactNode {
+		//@ts-ignore
+		return React.createElement(Root, {
+			getDevices: this.devices,
 		});
 	}
-	devices() {
+	get devices() {
 		return () => this.myrian.getDevices().reduce(DeviceReduce, {});
 	}
 }

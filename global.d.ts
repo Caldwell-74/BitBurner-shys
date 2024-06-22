@@ -10,6 +10,7 @@ declare global {
 	type Component = BB.Component;
 	type Recipe = BB.Recipe;
 	type BaseDevice = BB.BaseDevice;
+	type Server = BB.Server;
 	type SortedDevices = {
 		[key in DeviceType]?: Device[];
 	};
