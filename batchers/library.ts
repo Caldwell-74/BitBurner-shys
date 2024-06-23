@@ -46,6 +46,10 @@ export class Library {
 			this.#slice(toDelete);
 		}
 	}
+	clearLibrary() {
+		this.#data.clear();
+		this.#least = undefined;
+	}
 	#slice(book: Book) {
 		if (this.#least === book) {
 			this.#least = book.next;
@@ -115,8 +119,13 @@ class Book {
 		return this.#id;
 	}
 }
-
-const sampleData = {
+interface sampleData {
+	init: BookDataList;
+	extend: BookDataList;
+	delete: number[];
+	errors: Record<string, number>;
+}
+const sampleData: sampleData = {
 	init: [
 		[0, 100],
 		[1, 10],
@@ -130,8 +139,12 @@ const sampleData = {
 		[6, 0],
 		[7, 88],
 	],
+	delete: [4, 5, 2],
 	errors: {
 		add: 0,
 		del: 999,
 	},
 };
+//Startup Tests and clear
+export const BookLibrary = new Library(sampleData.init);
+BookLibrary.clearLibrary();
