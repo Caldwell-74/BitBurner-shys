@@ -77,3 +77,6 @@ class ServerWrapper {
         }
     }
 }
+
+const array: (string | null)[] = ["foo",null]
+const filtred = array.filter(x => x)
