@@ -1,14 +1,14 @@
-type BookDataList = BookRawData[];
-type BookRawData = [number, number?];
+import type { BookDataListCount, BookRawDataCount } from "./types";
+import { sampleDataCount } from "./sampleData";
 
-export class Library {
+class Library {
 	#data: Map<number, Book>;
 	#least: Book;
-	constructor(data: BookDataList) {
+	constructor(data: BookDataListCount) {
 		this.#data = new Map();
 		this.createBooks(data);
 	}
-	createBooks(data: BookDataList) {
+	createBooks(data: BookDataListCount) {
 		for (const [id, count] of data) {
 			const nBook = new Book(id, count);
 			this.#setBook(nBook.id, nBook);
@@ -33,8 +33,10 @@ export class Library {
 	hasBook(id: number) {
 		return this.#data.has(id);
 	}
-	addBook(data: BookRawData, del: boolean = false) {
+	addBook(data: BookRawDataCount, del: boolean = false) {
 		const nBook = new Book(...data);
+		if (this.hasBook(nBook.id))
+			throw new Error(`Book: ${nBook.id} already exists!`);
 		this.#setBook(nBook.id, nBook);
 
 		const found = this.#least.findBook(nBook.count);
@@ -53,7 +55,7 @@ export class Library {
 	#slice(book: Book) {
 		if (this.#least === book) {
 			this.#least = book.next;
-			book.next.prev = null;
+			this.#least.prev = null;
 		} else if (!book.next) {
 			book.prev.next = null;
 		} else {
@@ -88,11 +90,11 @@ class Book {
 	#next: Book;
 	constructor(id: number, count: number = 0) {
 		this.#id = id;
-		this.#count = count;
+		this.count = count;
 	}
 	findBook(toTop: number): Book {
 		if (this.count >= toTop) return this;
-		return this.#next?.findBook(toTop) ?? this;
+		return this.next?.findBook(toTop) ?? this;
 	}
 	get prev() {
 		return this.#prev;
@@ -119,32 +121,6 @@ class Book {
 		return this.#id;
 	}
 }
-interface sampleData {
-	init: BookDataList;
-	extend: BookDataList;
-	delete: number[];
-	errors: Record<string, number>;
-}
-const sampleData: sampleData = {
-	init: [
-		[0, 100],
-		[1, 10],
-		[2, 30],
-		[40, 22],
-		[3, 0],
-	],
-	extend: [
-		[4, 50],
-		[5, 100],
-		[6, 0],
-		[7, 88],
-	],
-	delete: [4, 5, 2],
-	errors: {
-		add: 0,
-		del: 999,
-	},
-};
 //Startup Tests and clear
-export const BookLibrary = new Library(sampleData.init);
+export const BookLibrary = new Library(sampleDataCount.init);
 BookLibrary.clearLibrary();
