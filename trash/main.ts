@@ -1,4 +1,4 @@
-import MyrianHandler from "../../myridian/myrian";
+import MyrianHandler from "./myridian/myrian";
 /** @param {NS} ns */
 export async function main(ns: NS) {
 	ns.disableLog("ALL");
